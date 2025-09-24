@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Email Form</title>
+  <title>Subscribe Form</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -19,10 +19,11 @@
       border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
       text-align: center;
+      width: 300px;
     }
-    input[type="email"] {
+    input {
       padding: 10px;
-      width: 250px;
+      width: 90%;
       border: 1px solid #ccc;
       border-radius: 5px;
       margin-bottom: 10px;
@@ -36,6 +37,7 @@
       border-radius: 5px;
       cursor: pointer;
       font-size: 16px;
+      width: 100%;
     }
     button:hover {
       background: #0056b3;
@@ -50,6 +52,7 @@
 
   <form id="emailForm">
     <h2>Subscribe</h2>
+    <input type="text" id="name" placeholder="Enter your name" required />
     <input type="email" id="email" placeholder="Enter your email" required />
     <br>
     <button type="submit">Submit</button>
@@ -58,34 +61,36 @@
 
   <script>
     document.getElementById("emailForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-  var email = document.getElementById("email").value;
-  var msg = document.getElementById("msg");
+      e.preventDefault();
+      var name = document.getElementById("name").value;
+      var email = document.getElementById("email").value;
+      var msg = document.getElementById("msg");
 
-  var formData = new FormData();
-  formData.append("email", email);
+      var formData = new FormData();
+      formData.append("name", name);
+      formData.append("email", email);
 
-  fetch("https://script.google.com/macros/s/AKfycbx1US5CPzZQt1Tc4bRyElDyD8wW2VDTwwYF4-YIubc4qDSZ6Qv_dDOaTDBE_6tj5FNj/exec", {
-    method: "POST",
-    body: formData
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.status === "success") {
-      msg.innerHTML = "✅ Email submitted successfully!";
-      msg.style.color = "green";
-      document.getElementById("email").value = "";
-    } else {
-      msg.innerHTML = "❌ Error: " + data.message;
-      msg.style.color = "red";
-    }
-  })
-  .catch(err => {
-    msg.innerHTML = "⚠️ Request failed: " + err;
-    msg.style.color = "red";
-  });
-});
-
+      fetch("https://script.google.com/macros/s/AKfycbw2G3IsYSIzJmCMXPW2FaHunIiP426kDHdzbEbg97-_tWT-WplPiBV98yNzdf-7K--K/exec", {
+        method: "POST",
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === "success") {
+          msg.innerHTML = "✅ Submitted successfully!";
+          msg.style.color = "green";
+          document.getElementById("name").value = "";
+          document.getElementById("email").value = "";
+        } else {
+          msg.innerHTML = "❌ Error: " + data.message;
+          msg.style.color = "red";
+        }
+      })
+      .catch(err => {
+        msg.innerHTML = "⚠️ Request failed: " + err;
+        msg.style.color = "red";
+      });
+    });
   </script>
 
 </body>
